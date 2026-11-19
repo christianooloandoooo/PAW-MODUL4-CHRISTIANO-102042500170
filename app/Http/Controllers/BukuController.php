@@ -89,7 +89,7 @@ class BukuController extends Controller
             'penerbit'     => 'required|string|max:100',
             'tahun_terbit' => 'required|integer',
             'stok'         => 'required|integer|min:0',
-            // TODO 4: Tambahkan validasi untuk berkas 'cover' (nullable|image|mimes:jpeg,png,jpg|max:2048)
+            'cover'        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ], [
             'judul.required'        => 'Judul buku wajib diisi.',
             'judul.max'             => 'Judul buku maksimal 100 karakter.',
@@ -145,7 +145,7 @@ class BukuController extends Controller
             'penerbit'     => 'required|string|max:100',
             'tahun_terbit' => 'required|integer',
             'stok'         => 'required|integer|min:0',
-            // TODO 4: Tambahkan validasi untuk berkas 'cover' (nullable|image|mimes:jpeg,png,jpg|max:2048)
+            'cover'        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ], [
             'judul.required'        => 'Judul buku wajib diisi.',
             'judul.max'             => 'Judul buku maksimal 100 karakter.',
@@ -186,6 +186,9 @@ class BukuController extends Controller
         }
 
         // TODO 6: Hapus berkas fisik 'cover' dari Storage::disk('public') sebelum record buku dihapus jika data cover ada
+        if ($buku->cover) {
+            Storage::disk('public')->delete($buku->cover);
+        }
 
         $buku->delete();
 
